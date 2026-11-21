@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>COP30 Belém 2025</title>
+<style>
+  :root{--floresta:#0B3D2E;--folha:#2E9E5B;--rio:#1B6CA8;--sol:#F4C430;--branco:#FFFFFF;}
+  html,body{margin:0;padding:0;background:#0B3D2E;}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:var(--floresta);font-family:"Inter",sans-serif;color:var(--branco);}
+  .layer{position:absolute;left:0;top:0;width:1920px;height:1080px;}
+  .abs{position:absolute;white-space:nowrap;}
+  svg.full{position:absolute;left:0;top:0;width:1920px;height:1080px;}
+
+  /* Cena 1 */
+  .title1{left:0;width:1920px;text-align:center;top:100px;font-size:104px;font-weight:900;letter-spacing:-1px;line-height:1.1;}
+  .title1 .dot{color:var(--sol);}
+  .sub1{left:0;width:1920px;text-align:center;top:236px;font-size:58px;font-weight:700;color:var(--sol);line-height:1.2;}
+  .pill{background:var(--floresta);color:var(--sol);font-size:50px;font-weight:800;padding:4px 20px;border-radius:18px;border:3px solid var(--sol);line-height:1.2;}
+
+  /* Cena 2 */
+  .h2{left:100px;top:86px;font-size:80px;font-weight:900;line-height:1.1;}
+  .item{left:1072px;width:760px;font-size:50px;font-weight:700;line-height:60px;white-space:normal;}
+
+  /* Cena 3 */
+  .h3{left:0;width:1920px;text-align:center;top:64px;font-size:80px;font-weight:900;line-height:1.1;}
+  .card{position:absolute;top:220px;width:560px;height:740px;box-sizing:border-box;padding:40px 44px;border-radius:36px;background:#FFFFFF;color:var(--floresta);text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.35);}
+  .card .icon{width:120px;height:120px;display:block;margin:0 auto 22px;}
+  .ch{font-size:60px;font-weight:900;color:var(--rio);line-height:1.1;margin-bottom:16px;}
+  .cb{font-size:48px;font-weight:600;line-height:1.22;}
+  .tag{position:absolute;left:40px;right:40px;bottom:36px;font-size:48px;font-weight:800;line-height:1.2;color:var(--rio);}
+
+  /* Cena 4 */
+  .panel{left:110px;top:360px;width:1700px;height:330px;border-radius:40px;background:rgba(11,61,46,.92);transform-origin:50% 50%;}
+  .t4a{left:0;width:1920px;text-align:center;top:430px;font-size:70px;font-weight:900;line-height:1.1;}
+  .t4b{left:0;width:1920px;text-align:center;top:560px;font-size:56px;font-weight:800;color:var(--sol);line-height:1.2;}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- CENA 1: 0–3 s — mapa do Brasil com Belém pulsando -->
+  <div class="layer" id="s1">
+    <svg class="full" viewBox="0 0 1920 1080">
+      <defs>
+        <radialGradient id="glow">
+          <stop offset="0%" stop-color="#1B6CA8" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="#0B3D2E" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="1057" cy="446" r="460" fill="url(#glow)"/>
+      <path id="brazil" d="" fill="#2E9E5B" fill-opacity="0" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"/>
+      <circle id="ring0" r="16" fill="none" stroke="#F4C430" stroke-width="5" stroke-opacity="0"/>
+      <circle id="ring1" r="16" fill="none" stroke="#F4C430" stroke-width="5" stroke-opacity="0"/>
+      <circle id="pin" r="0" fill="#F4C430" stroke="#FFFFFF" stroke-width="5"/>
+    </svg>
+    <div class="abs pill" id="label1">Belém</div>
+    <div class="abs title1" id="title1">COP30 <span class="dot">•</span> Belém, Brasil</div>
+    <div class="abs sub1" id="sub1">Novembro de 2025</div>
+  </div>
+
+  <!-- CENA 2: 3–7 s — por que a Amazônia importa -->
+  <div class="layer" id="s2">
+    <svg class="full" viewBox="0 0 1920 1080">
+      <g id="trees"></g>
+      <path id="river" d="M-20 960 C120 880 260 1010 400 960 S640 880 860 960" fill="none" stroke="#1B6CA8" stroke-width="34" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"/>
+      <path id="riverFlow" d="M-20 960 C120 880 260 1010 400 960 S640 880 860 960" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-opacity="0" pathLength="1" stroke-dasharray="0.04 0.1"/>
+
+      <g id="ic0">
+        <circle cx="65" cy="65" r="65" fill="#F4C430"/>
+        <path d="M65 22 L94 72 L36 72 Z" fill="#0B3D2E"/>
+        <path d="M65 46 L104 100 L26 100 Z" fill="#0B3D2E"/>
+        <rect x="58" y="100" width="14" height="16" fill="#0B3D2E"/>
+      </g>
+      <g id="ic1">
+        <circle cx="65" cy="65" r="65" fill="#F4C430"/>
+        <g fill="#0B3D2E">
+          <circle cx="65" cy="43" r="17"/><circle cx="85.9" cy="58.2" r="17"/><circle cx="77.9" cy="82.8" r="17"/><circle cx="51.1" cy="82.8" r="17"/><circle cx="44.1" cy="58.2" r="17"/>
+        </g>
+        <circle cx="65" cy="65" r="11" fill="#FFFFFF"/>
+      </g>
+      <g id="ic2">
+        <circle cx="65" cy="65" r="65" fill="#F4C430"/>
+        <g fill="#0B3D2E">
+          <circle cx="50" cy="62" r="17"/><circle cx="69" cy="52" r="21"/><circle cx="87" cy="64" r="16"/><rect x="33" y="62" width="70" height="20" rx="10"/>
+        </g>
+        <g stroke="#0B3D2E" stroke-width="6" stroke-linecap="round">
+          <line x1="46" y1="96" x2="42" y2="112"/><line x1="65" y1="96" x2="61" y2="112"/><line x1="84" y1="96" x2="80" y2="112"/>
+        </g>
+      </g>
+      <g id="ic3">
+        <circle cx="65" cy="65" r="65" fill="#F4C430"/>
+        <path d="M65 26 L99 44 L65 62 L31 44 Z" fill="#0B3D2E"/>
+        <path d="M31 44 L65 62 L65 104 L31 86 Z" fill="#2E9E5B"/>
+        <path d="M99 44 L65 62 L65 104 L99 86 Z" fill="#1B6CA8"/>
+      </g>
+    </svg>
+    <div class="abs h2" id="h2">Por que a Amazônia importa</div>
+    <div class="abs item" id="it0">Maior floresta tropical do planeta</div>
+    <div class="abs item" id="it1">Abriga enorme biodiversidade</div>
+    <div class="abs item" id="it2">Regula chuvas e o clima</div>
+    <div class="abs item" id="it3">Armazena carbono</div>
+  </div>
+
+  <!-- CENA 3: 7–13 s — acordos da COP30 -->
+  <div class="layer" id="s3">
+    <div class="abs h3" id="h3">Acordos da COP30</div>
+
+    <div class="card" id="c0" style="left:60px">
+      <svg class="icon" viewBox="0 0 150 150">
+        <circle cx="48" cy="44" r="19" fill="#0B3D2E"/>
+        <path d="M18 136 Q18 84 48 84 Q78 84 78 136 Z" fill="#2E9E5B"/>
+        <circle cx="102" cy="44" r="19" fill="#0B3D2E"/>
+        <path d="M72 136 Q72 84 102 84 Q132 84 132 136 Z" fill="#1B6CA8"/>
+        <rect x="56" y="98" width="38" height="18" rx="9" fill="#F4C430" stroke="#0B3D2E" stroke-width="4"/>
+      </svg>
+      <div class="ch">Global Mutirão</div>
+      <div class="cb">pacote político adotado por quase todos os países</div>
+      <div class="tag">mutirão = esforço coletivo</div>
+    </div>
+
+    <div class="card" id="c1" style="left:680px">
+      <svg class="icon" viewBox="0 0 150 150">
+        <path d="M75 12 L130 30 L130 80 C130 116 106 136 75 146 C44 136 20 116 20 80 L20 30 Z" fill="#1B6CA8"/>
+        <path d="M50 80 L68 98 L102 62" fill="none" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="ch">Triplicar</div>
+      <div class="cb">o financiamento para adaptação até 2035</div>
+    </div>
+
+    <div class="card" id="c2" style="left:1300px">
+      <svg class="icon" viewBox="0 0 150 150">
+        <circle cx="58" cy="56" r="38" fill="#2E9E5B"/>
+        <circle cx="40" cy="72" r="24" fill="#2E9E5B"/>
+        <rect x="51" y="86" width="14" height="50" fill="#0B3D2E"/>
+        <circle cx="116" cy="110" r="26" fill="#F4C430" stroke="#0B3D2E" stroke-width="5"/>
+        <text x="116" y="122" font-size="34" font-weight="900" text-anchor="middle" fill="#0B3D2E" font-family="Inter, sans-serif">$</text>
+      </svg>
+      <div class="ch">TFFF</div>
+      <div class="cb">fundo para pagar pela proteção de florestas tropicais</div>
+      <div class="tag">Lançado pelo Brasil: cerca de US$ 5,5 bi em promessas</div>
+    </div>
+  </div>
+
+  <!-- CENA 4: 13–15 s — encerramento -->
+  <div class="layer" id="s4">
+    <svg class="full" viewBox="0 0 1920 1080"><g id="canopies"></g></svg>
+    <div class="abs panel" id="panel"></div>
+    <div class="abs t4a" id="t4a">A floresta em pé é parte da solução.</div>
+    <div class="abs t4b" id="t4b">COP30 • Belém 2025</div>
+  </div>
+
+  <!-- Fade para preto nos últimos 0,5 s -->
+  <div class="layer" id="fade" style="background:#000;opacity:0"></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const NS = 'http://www.w3.org/2000/svg';
+const clamp01 = x => x < 0 ? 0 : x > 1 ? 1 : x;
+const prog = (t, a, b) => clamp01((t - a) / (b - a));
+const eOut = x => 1 - Math.pow(1 - x, 3);
+const eInOut = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const eBack = x => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const rnd = n => { const x = Math.sin(n * 12.9898 + 78.233) * 43758.5453; return x - Math.floor(x); };
+const layerA = (t, s, e, fd) => {
+  let a = 1;
+  if (s > 0) a = Math.min(a, eInOut(prog(t, s, s + fd)));
+  if (isFinite(e)) a = Math.min(a, 1 - eInOut(prog(t, e - fd, e)));
+  return a;
+};
+
+// ---- Silhueta aproximada do Brasil (lon, lat), sentido horário a partir do extremo norte
+const BR = [
+  [-60.2,5.3],[-60.0,3.6],[-59.8,2.2],[-57.0,1.9],[-54.5,2.3],[-52.3,2.3],[-51.7,4.2],
+  [-50.0,1.7],[-49.0,0.0],[-48.3,-1.2],[-46.0,-1.9],[-44.5,-2.5],[-42.0,-2.9],[-40.5,-2.9],
+  [-38.5,-3.7],[-37.2,-4.8],[-35.5,-5.4],[-34.8,-7.1],[-34.9,-8.2],[-35.6,-9.8],[-37.0,-11.0],
+  [-38.5,-12.9],[-39.0,-15.0],[-39.8,-17.5],[-40.5,-20.0],[-41.9,-22.0],[-43.2,-23.0],[-44.8,-23.5],
+  [-46.3,-24.0],[-48.0,-25.5],[-48.6,-27.0],[-48.7,-28.5],[-50.0,-30.5],[-51.5,-31.8],[-52.5,-33.3],
+  [-53.4,-33.7],[-54.5,-32.0],[-55.0,-31.0],[-56.5,-30.2],[-57.1,-29.8],[-55.8,-27.5],[-54.6,-25.6],
+  [-54.3,-24.1],[-55.6,-22.3],[-57.6,-22.1],[-58.2,-20.0],[-57.6,-19.0],[-58.2,-16.3],[-60.0,-13.7],
+  [-61.8,-13.0],[-65.3,-9.8],[-68.8,-11.0],[-70.5,-11.0],[-72.9,-9.5],[-73.9,-7.3],[-73.0,-5.5],
+  [-70.0,-4.2],[-69.0,-2.5],[-69.5,-1.0],[-67.0,1.5],[-66.9,1.2],[-64.0,2.2],[-63.0,4.0],[-60.9,5.0]
+];
+const PX = lon => 960 + (lon + 54.35) * 16.6;
+const PY = lat => 330 + (5.3 - lat) * 17.2;
+function smoothPath(P) {
+  const n = P.length;
+  let d = `M${P[0][0].toFixed(1)},${P[0][1].toFixed(1)}`;
+  for (let i = 0; i < n; i++) {
+    const p0 = P[(i - 1 + n) % n], p1 = P[i], p2 = P[(i + 1) % n], p3 = P[(i + 2) % n];
+    const c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+    const c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+    d += ` C${c1x.toFixed(1)},${c1y.toFixed(1)} ${c2x.toFixed(1)},${c2y.toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+  }
+  return d + ' Z';
+}
+$('brazil').setAttribute('d', smoothPath(BR.map(([lo, la]) => [PX(lo), PY(la)])));
+
+// ---- Cena 2: árvores (copas) que crescem
+const trees = [];
+for (let i = 0; i < 9; i++) trees.push({ x: 95 + i * 88 + (rnd(i) - 0.5) * 26, h: 250 + rnd(i + 11) * 190, w: 120 + rnd(i + 5) * 44, c: i % 2 ? '#2E9E5B' : '#24874F' });
+$('trees').innerHTML = trees.map((tr, i) => `
+  <g id="tr${i}">
+    <g fill="${tr.c}">
+      <circle cx="0" cy="${(-tr.h * 0.62).toFixed(1)}" r="${(tr.w * 0.42).toFixed(1)}"/>
+      <circle cx="${(-tr.w * 0.28).toFixed(1)}" cy="${(-tr.h * 0.38).toFixed(1)}" r="${(tr.w * 0.34).toFixed(1)}"/>
+      <circle cx="${(tr.w * 0.28).toFixed(1)}" cy="${(-tr.h * 0.38).toFixed(1)}" r="${(tr.w * 0.34).toFixed(1)}"/>
+    </g>
+    <circle cx="${(-tr.w * 0.12).toFixed(1)}" cy="${(-tr.h * 0.7).toFixed(1)}" r="${(tr.w * 0.16).toFixed(1)}" fill="#3DB36D"/>
+  </g>`).join('');
+
+// ---- Cena 4: copas preenchendo a tela
+const canopies = [];
+for (let j = 0; j < 6; j++) for (let i = 0; i < 10; i++) {
+  const k = canopies.length;
+  const cx = i * 230 + (j % 2) * 115 - 40, cy = j * 230 - 40;
+  const d = 0.02 + (1 - cy / 1080) * 0.5 + rnd(k + 3) * 0.2;
+  const col = ['#2E9E5B', '#237F49', '#3DB36D'][Math.floor(rnd(k + 9) * 3)];
+  canopies.push({ x: cx, y: cy, d, col });
+}
+$('canopies').innerHTML = canopies.map((c, k) => `<circle id="cc${k}" r="165" fill="${c.col}" transform="translate(${c.x},${c.y}) scale(0)"/>`).join('');
+
+// ---- Renderização determinística de um instante t (segundos)
+function render(t) {
+  // Cena 1
+  $('s1').style.opacity = layerA(t, 0, 3.0, 0.35);
+  $('brazil').setAttribute('stroke-dashoffset', (1 - eInOut(prog(t, 0.2, 1.8))).toFixed(4));
+  $('brazil').setAttribute('fill-opacity', prog(t, 1.3, 1.9).toFixed(3));
+  const pe = eOut(prog(t, 1.5, 2.0));
+  const px = PX(-48.5), py = PY(-1.45);
+  $('pin').setAttribute('cx', px.toFixed(1));
+  $('pin').setAttribute('cy', (py - 45 * (1 - pe)).toFixed(1));
+  $('pin').setAttribute('r', (16 * pe).toFixed(2));
+  for (let k = 0; k < 2; k++) {
+    const ph = (t - 1.9) / 1.2 + k * 0.5;
+    const p = ph - Math.floor(ph);
+    const el = $('ring' + k);
+    el.setAttribute('cx', px.toFixed(1));
+    el.setAttribute('cy', py.toFixed(1));
+    el.setAttribute('r', (16 + p * 64).toFixed(2));
+    el.setAttribute('stroke-opacity', t > 1.9 ? ((1 - p) * 0.9).toFixed(3) : '0');
+  }
+  $('label1').style.left = (px + 34).toFixed(1) + 'px';
+  $('label1').style.top = (py - 28).toFixed(1) + 'px';
+  $('label1').style.opacity = pe.toFixed(3);
+  const te = eOut(prog(t, 0.2, 0.9));
+  $('title1').style.opacity = te.toFixed(3);
+  $('title1').style.transform = `translateY(${((1 - te) * 30).toFixed(1)}px)`;
+  const se = eOut(prog(t, 0.9, 1.4));
+  $('sub1').style.opacity = se.toFixed(3);
+  $('sub1').style.transform = `translateY(${((1 - se) * 30).toFixed(1)}px)`;
+
+  // Cena 2 (lt = tempo local)
+  $('s2').style.opacity = layerA(t, 3.0, 7.0, 0.35);
+  const lt = t - 3.0;
+  const he = eOut(prog(lt, 0.1, 0.7));
+  $('h2').style.opacity = he.toFixed(3);
+  $('h2').style.transform = `translateX(${((1 - he) * -80).toFixed(1)}px)`;
+  trees.forEach((tr, i) => {
+    const s = eBack(prog(lt, 0.2 + i * 0.12, 1.2 + i * 0.12));
+    $('tr' + i).setAttribute('transform', `translate(${tr.x.toFixed(1)},900) scale(1,${Math.max(0, s).toFixed(4)})`);
+  });
+  $('river').setAttribute('stroke-dashoffset', (1 - eInOut(prog(lt, 0.4, 1.8))).toFixed(4));
+  $('riverFlow').setAttribute('stroke-opacity', (0.5 * prog(lt, 1.6, 2.0)).toFixed(3));
+  $('riverFlow').setAttribute('stroke-dashoffset', (-lt * 0.35).toFixed(4));
+  [0, 1, 2, 3].forEach(i => {
+    const cy = [320, 510, 700, 890][i];
+    const p = prog(lt, 0.7 + i * 0.8, 1.3 + i * 0.8);
+    const e = eOut(p);
+    $('ic' + i).setAttribute('transform', `translate(900,${cy - 65}) translate(65,65) scale(${(0.6 + 0.4 * eBack(p)).toFixed(4)}) translate(-65,-65)`);
+    $('ic' + i).setAttribute('opacity', e.toFixed(3));
+    const it = $('it' + i);
+    it.style.opacity = e.toFixed(3);
+    it.style.transform = `translateX(${((1 - e) * 40).toFixed(1)}px)`;
+    it.style.top = (cy - 60) + 'px';
+    it.style.left = '1072px';
+  });
+
+  // Cena 3
+  $('s3').style.opacity = layerA(t, 7.0, 13.0, 0.35);
+  const l3 = t - 7.0;
+  $('h3').style.opacity = eOut(prog(l3, 0.1, 0.6)).toFixed(3);
+  [0, 1, 2].forEach(i => {
+    const p = prog(l3, 0.4 + i * 1.1, 1.2 + i * 1.1);
+    const e = eOut(p);
+    const c = $('c' + i);
+    c.style.opacity = e.toFixed(3);
+    c.style.transform = `translateY(${((1 - eInOut(p)) * 90).toFixed(1)}px)`;
+  });
+
+  // Cena 4
+  $('s4').style.opacity = layerA(t, 13.0, Infinity, 0.2);
+  const l4 = t - 13.0;
+  canopies.forEach((c, k) => {
+    const s = eBack(prog(l4, c.d, c.d + 0.6));
+    $('cc' + k).setAttribute('transform', `translate(${c.x},${c.y}) scale(${Math.max(0, s).toFixed(4)})`);
+  });
+  const pa = eOut(prog(l4, 0.5, 0.9));
+  $('panel').style.opacity = pa.toFixed(3);
+  $('panel').style.transform = `scale(${(0.96 + 0.04 * pa).toFixed(4)})`;
+  const a4 = eOut(prog(l4, 0.6, 1.0));
+  $('t4a').style.opacity = a4.toFixed(3);
+  $('t4a').style.transform = `translateY(${((1 - a4) * 24).toFixed(1)}px)`;
+  const b4 = eOut(prog(l4, 0.8, 1.2));
+  $('t4b').style.opacity = b4.toFixed(3);
+  $('t4b').style.transform = `translateY(${((1 - b4) * 24).toFixed(1)}px)`;
+
+  // Fade para preto nos últimos 0,5 s (quadro final totalmente preto)
+  $('fade').style.opacity = clamp01((t - 14.5) / 0.4667).toFixed(4);
+}
+window.render = render;
+render(0);
+</script>
+</body>
+</html>
