@@ -1,0 +1,14 @@
+{
+  "titulo": "Horizonte Verde",
+  "saida": "saida/teste_horizonte_verde.mp4",
+  "segmentos": [
+    {"tipo": "abertura"},
+    {"tipo": "apresentador", "clipe": "teste/clipes_teste/01_apresentador.mp4", "nome": "Nome do apresentador", "funcao": "Apresentador(a)",
+     "eventos": [{"tempo": 3.0, "duracao": 4.0, "tipo": "lista", "titulo": "Pontos da reportagem", "itens": ["Floresta em pé", "Chuvas e clima", "Carbono armazenado"]}]},
+    {"tipo": "reporter", "clipe": "teste/clipes_teste/02_reporter_belem.mp4", "nome": "Nome do repórter", "funcao": "Repórter", "cidade": "Belém",
+     "eventos": [{"tempo": 4.0, "duracao": 4.0, "tipo": "estatistica", "valor": "US$ 5,5 bi", "rotulo": "em promessas para o fundo de florestas"},
+                 {"tempo": 8.5, "duracao": 3.0, "tipo": "manchete", "texto": "Floresta em pé é parte da solução"}]},
+    {"tipo": "reporter", "clipe": "teste/clipes_teste/03_reporter_manaus.mp4", "nome": "Nome do repórter 2", "funcao": "Repórter", "cidade": "Manaus",
+     "eventos": [{"tempo": 5.0, "duracao": 4.0, "tipo": "lista", "titulo": "Na Amazônia", "itens": ["Maior floresta tropical", "Biodiversidade enorme"]}]}
+  ]
+}

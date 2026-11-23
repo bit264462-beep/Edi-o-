@@ -1,0 +1,17 @@
+{
+  "titulo": "Horizonte Verde",
+  "saida": "saida/Horizonte_Verde_reportagem.mp4",
+  "segmentos": [
+    {"tipo": "abertura"},
+    {"tipo": "apresentador", "clipe": "clipes/SUBSTITUIR_apresentador.mp4",
+     "nome": "Nome do apresentador", "funcao": "Apresentador(a)",
+     "eventos": []},
+    {"tipo": "reporter", "clipe": "clipes/SUBSTITUIR_reporter.mp4",
+     "nome": "Nome do repórter", "funcao": "Repórter", "cidade": "Belém",
+     "eventos": [
+       {"tempo": 5.0, "duracao": 4.0, "tipo": "estatistica", "valor": "VALOR", "rotulo": "descrição do valor"},
+       {"tempo": 12.0, "duracao": 4.0, "tipo": "lista", "titulo": "Título da lista", "itens": ["item 1", "item 2"]},
+       {"tempo": 20.0, "duracao": 3.0, "tipo": "manchete", "texto": "Frase de destaque"}
+     ]}
+  ]
+}

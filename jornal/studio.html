@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Horizonte Verde - estúdio</title>
+<style>
+  html,body{margin:0;padding:0;background:transparent;}
+  #s{position:relative;width:1920px;height:1080px;overflow:hidden;font-family:"Inter",sans-serif;color:#FFFFFF;background:transparent;}
+  .a{position:absolute;white-space:nowrap;}
+  svg.f{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible;}
+</style>
+</head>
+<body>
+<div id="s"></div>
+<script>
+// ---------- utilitários de animação (determinísticos: cada quadro = render(t)) ----------
+const $ = id => document.getElementById(id);
+const clamp01 = x => x < 0 ? 0 : x > 1 ? 1 : x;
+const prog = (t, a, b) => clamp01((t - a) / (b - a));
+const eOut = x => 1 - Math.pow(1 - x, 3);
+const eInOut = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const eBack = x => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const lerp = (a, b, u) => a + (b - a) * u;
+const f2 = v => (+v).toFixed(2);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+// ---------- silhueta aproximada do Brasil (lon, lat), usada na transição com zoom ----------
+const BR = [
+  [-60.2,5.3],[-60.0,3.6],[-59.8,2.2],[-57.0,1.9],[-54.5,2.3],[-52.3,2.3],[-51.7,4.2],
+  [-50.0,1.7],[-49.0,0.0],[-48.3,-1.2],[-46.0,-1.9],[-44.5,-2.5],[-42.0,-2.9],[-40.5,-2.9],
+  [-38.5,-3.7],[-37.2,-4.8],[-35.5,-5.4],[-34.8,-7.1],[-34.9,-8.2],[-35.6,-9.8],[-37.0,-11.0],
+  [-38.5,-12.9],[-39.0,-15.0],[-39.8,-17.5],[-40.5,-20.0],[-41.9,-22.0],[-43.2,-23.0],[-44.8,-23.5],
+  [-46.3,-24.0],[-48.0,-25.5],[-48.6,-27.0],[-48.7,-28.5],[-50.0,-30.5],[-51.5,-31.8],[-52.5,-33.3],
+  [-53.4,-33.7],[-54.5,-32.0],[-55.0,-31.0],[-56.5,-30.2],[-57.1,-29.8],[-55.8,-27.5],[-54.6,-25.6],
+  [-54.3,-24.1],[-55.6,-22.3],[-57.6,-22.1],[-58.2,-20.0],[-57.6,-19.0],[-58.2,-16.3],[-60.0,-13.7],
+  [-61.8,-13.0],[-65.3,-9.8],[-68.8,-11.0],[-70.5,-11.0],[-72.9,-9.5],[-73.9,-7.3],[-73.0,-5.5],
+  [-70.0,-4.2],[-69.0,-2.5],[-69.5,-1.0],[-67.0,1.5],[-66.9,1.2],[-64.0,2.2],[-63.0,4.0],[-60.9,5.0]
+];
+const PX = lon => 960 + (lon + 54.35) * 16.6;
+const PY = lat => 330 + (5.3 - lat) * 17.2;
+function smoothPath(P) {
+  const n = P.length;
+  let d = `M${P[0][0].toFixed(1)},${P[0][1].toFixed(1)}`;
+  for (let i = 0; i < n; i++) {
+    const p0 = P[(i - 1 + n) % n], p1 = P[i], p2 = P[(i + 1) % n], p3 = P[(i + 2) % n];
+    const c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+    const c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+    d += ` C${c1x.toFixed(1)},${c1y.toFixed(1)} ${c2x.toFixed(1)},${c2y.toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+  }
+  return d + ' Z';
+}
+const BR_D = smoothPath(BR.map(([a, b]) => [PX(a), PY(b)]));
+
+// ---------- montagem por modo ----------
+let MODE = null, CFG = null;
+const BUILD = {}, RENDER = {};
+function setup(mode, cfg) { MODE = mode; CFG = cfg; $('s').innerHTML = BUILD[mode](cfg); render(0); }
+function render(t) { RENDER[MODE](t, CFG); }
+window.setup = setup;
+window.render = render;
+
+// ======================= ABERTURA (6 s, opaca) =======================
+BUILD.intro = () => `
+  <div class="a" style="left:0;top:0;width:1920px;height:1080px;background:linear-gradient(180deg,#0B3D2E 0%,#062A1F 100%)"></div>
+  <svg class="f" viewBox="0 0 1920 1080">
+    <defs><radialGradient id="glow">
+      <stop offset="0" stop-color="#F4C430" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#F4C430" stop-opacity="0"/>
+    </radialGradient></defs>
+    <circle id="glowC" cx="960" cy="1000" r="640" fill="url(#glow)"/>
+    <circle id="sun" cx="960" cy="1000" r="200" fill="#F4C430"/>
+    <path id="h1" d="M-40 760 Q320 640 700 730 T1420 720 T1980 700 V1120 H-40Z" fill="#1F7A48"/>
+    <path id="h2" d="M-40 800 Q360 720 760 790 T1460 780 T1980 770 V1120 H-40Z" fill="#2E9E5B"/>
+    <path id="h3" d="M-40 860 Q400 800 820 850 T1500 850 T1980 845 V1120 H-40Z" fill="#0B3D2E"/>
+    <line id="hz" x1="0" y1="720" x2="1920" y2="720" stroke="#FFFFFF" stroke-width="3" stroke-opacity="0"/>
+  </svg>
+  <div class="a" id="jor" style="left:0;width:1920px;text-align:center;top:52px;font-size:54px;font-weight:800;letter-spacing:16px;color:#F4C430;opacity:0">JORNAL</div>
+  <div class="a" id="w1" style="left:0;width:1920px;text-align:center;top:120px;font-size:180px;font-weight:900;letter-spacing:4px;line-height:1;opacity:0">HORIZONTE</div>
+  <div class="a" id="w2" style="left:0;width:1920px;text-align:center;top:300px;font-size:180px;font-weight:900;letter-spacing:4px;line-height:1;color:#F4C430;opacity:0">VERDE</div>
+  <div class="a" id="tick" style="left:0;top:960px;width:1920px;height:96px;background:#F4C430"></div>
+  <div class="a" id="tickT" style="left:0;top:972px;width:1920px;text-align:center;font-size:52px;font-weight:900;color:#0B3D2E">REPORTAGEM ESPECIAL • JORNAL HORIZONTE VERDE</div>
+  <div class="a" id="fx" style="left:0;top:0;width:1920px;height:1080px;background:#000;opacity:0"></div>`;
+
+RENDER.intro = (t) => {
+  const s = eOut(prog(t, 0.2, 2.0));
+  const sy = lerp(1000, 720, s);
+  $('sun').setAttribute('cy', f2(sy));
+  $('glowC').setAttribute('cy', f2(sy));
+  [['h1', 1.0], ['h2', 1.25], ['h3', 1.5]].forEach(([id, d]) => {
+    const e = eOut(prog(t, d, d + 0.9));
+    $(id).setAttribute('transform', `translate(0,${f2((1 - e) * 340)})`);
+  });
+  $('hz').setAttribute('stroke-opacity', f2(prog(t, 1.8, 2.4)));
+  $('jor').style.opacity = f2(prog(t, 2.2, 2.6));
+  const e1 = eOut(prog(t, 2.4, 3.0));
+  $('w1').style.opacity = f2(e1);
+  $('w1').style.transform = `translateY(${f2((1 - e1) * 60)}px)`;
+  const e2 = eOut(prog(t, 2.8, 3.4));
+  $('w2').style.opacity = f2(e2);
+  $('w2').style.transform = `translateY(${f2((1 - e2) * 60)}px)`;
+  const tk = (1 - eOut(prog(t, 3.6, 4.2))) * -1920;
+  $('tick').style.transform = `translateX(${f2(tk)}px)`;
+  $('tickT').style.transform = `translateX(${f2(tk)}px)`;
+  $('fx').style.opacity = f2(prog(t, 5.5, 6.0));
+};
+
+// ======================= TRANSIÇÃO DO REPÓRTER: mapa + zoom (3 s, opaca) =======================
+BUILD.map = (cfg) => `
+  <div class="a" style="left:0;top:0;width:1920px;height:1080px;background:radial-gradient(circle at 50% 45%,#135A44 0%,#0B3D2E 60%,#062A1F 100%)"></div>
+  <svg class="f" viewBox="0 0 1920 1080">
+    <g id="cam">
+      <path d="${BR_D}" fill="#2E9E5B" stroke="#FFFFFF" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
+      <circle id="ring0" r="0" fill="none" stroke="#F4C430" stroke-width="4" vector-effect="non-scaling-stroke" stroke-opacity="0"/>
+      <circle id="ring1" r="0" fill="none" stroke="#F4C430" stroke-width="4" vector-effect="non-scaling-stroke" stroke-opacity="0"/>
+      <circle id="pin" r="0" fill="#F4C430" stroke="#FFFFFF" stroke-width="3" vector-effect="non-scaling-stroke"/>
+    </g>
+  </svg>
+  <div class="a" id="card" style="left:110px;top:800px;opacity:0;background:rgba(11,61,46,.94);border-left:14px solid #F4C430;border-radius:24px;padding:24px 48px 26px 40px">
+    <div style="font-size:48px;font-weight:700;line-height:1.2">Direto de</div>
+    <div style="font-size:72px;font-weight:900;color:#F4C430;line-height:1.1">${esc(cfg.cidadeRotulo)}</div>
+  </div>`;
+
+RENDER.map = (t, cfg) => {
+  const Z = 6.5;
+  const cx1 = PX(cfg.lon), cy1 = PY(cfg.lat);
+  const u = eInOut(prog(t, 0.2, 2.2));
+  const sc = lerp(1, Z, u);
+  const cx = lerp(960, cx1, u), cy = lerp(665, cy1, u);
+  $('cam').setAttribute('transform', `translate(960,540) scale(${f2(sc)}) translate(${f2(-cx)},${f2(-cy)})`);
+  const pe = eOut(prog(t, 1.8, 2.2));
+  $('pin').setAttribute('cx', f2(cx1));
+  $('pin').setAttribute('cy', f2(cy1));
+  $('pin').setAttribute('r', f2(12 * pe));
+  for (let k = 0; k < 2; k++) {
+    const ph = (t - 2.2) / 1.1 + k * 0.5;
+    const p = ph - Math.floor(ph);
+    const el = $('ring' + k);
+    el.setAttribute('cx', f2(cx1));
+    el.setAttribute('cy', f2(cy1));
+    el.setAttribute('r', f2(12 + p * 44));
+    el.setAttribute('stroke-opacity', t > 2.2 ? f2((1 - p) * 0.9) : '0');
+  }
+  $('card').style.opacity = f2(prog(t, 2.2, 2.7));
+};
+
+// ======================= LEGENDA DO APRESENTADOR/REPÓRTER (transparente) =======================
+BUILD.lower = (cfg) => `
+  <div class="a" id="lb" style="left:110px;top:800px;background:rgba(11,61,46,.95);border-left:14px solid #F4C430;border-radius:22px;padding:22px 52px 24px 40px">
+    <div style="font-size:60px;font-weight:900;line-height:1.1">${esc(cfg.nome).toUpperCase()}</div>
+    <div style="font-size:50px;font-weight:700;color:#F4C430;line-height:1.25">${esc(cfg.funcao)}${cfg.cidadeRotulo ? ' • ' + esc(cfg.cidadeRotulo) : ''}</div>
+  </div>`;
+
+RENDER.lower = (t, cfg) => {
+  const d = cfg.dur;
+  const ein = eOut(prog(t, 0, 0.5));
+  const eout = 1 - eInOut(prog(t, d - 0.6, d));
+  const x = (1 - ein) * -820 + (1 - eout) * -820;
+  $('lb').style.transform = `translateX(${f2(x)}px)`;
+};
+
+// ======================= ANIMAÇÕES SINCRONIZADAS COM A FALA (transparente) =======================
+// tipo "estatistica": grande painel com um valor e um rótulo (lado esquerdo)
+// tipo "lista": painel à direita com título e itens que aparecem um a um
+// tipo "manchete": faixa na parte inferior com uma frase de destaque
+BUILD.event = (cfg) => {
+  if (cfg.tipo === 'estatistica') return `
+    <div class="a" id="ev" style="left:110px;top:300px;width:1000px;white-space:normal;box-sizing:border-box;padding:40px 56px 44px 56px;background:rgba(11,61,46,.94);border-left:16px solid #F4C430;border-radius:36px">
+      <div style="font-size:150px;font-weight:900;color:#F4C430;line-height:1.02">${esc(cfg.valor)}</div>
+      <div style="font-size:58px;font-weight:700;line-height:1.2;margin-top:18px">${esc(cfg.rotulo)}</div>
+    </div>`;
+  if (cfg.tipo === 'lista') return `
+    <div class="a" id="ev" style="left:900px;top:200px;width:900px;white-space:normal;box-sizing:border-box;padding:44px 56px 48px 56px;background:rgba(11,61,46,.94);border-left:16px solid #F4C430;border-radius:36px">
+      <div style="font-size:64px;font-weight:900;color:#F4C430;line-height:1.1;margin-bottom:24px">${esc(cfg.titulo || '')}</div>
+      ${(cfg.itens || []).map((x, i) => `<div class="bi" id="bi${i}" style="font-size:54px;font-weight:700;line-height:1.25;margin:16px 0;opacity:0"><span style="color:#F4C430">•</span>&nbsp; ${esc(x)}</div>`).join('')}
+    </div>`;
+  return `
+    <div class="a" id="ev" style="left:0;top:820px;width:1920px;height:220px;box-sizing:border-box;white-space:normal;display:flex;align-items:center;justify-content:center;padding:0 140px;text-align:center;background:rgba(11,61,46,.95);border-top:8px solid #F4C430;font-size:66px;font-weight:800;line-height:1.2">${esc(cfg.texto)}</div>`;
+};
+
+RENDER.event = (t, cfg) => {
+  const d = cfg.dur;
+  const ein = eOut(prog(t, 0, 0.45));
+  const eout = 1 - eInOut(prog(t, d - 0.5, d));
+  const ev = $('ev');
+  if (cfg.tipo === 'estatistica') {
+    ev.style.transform = `translateX(${f2((1 - ein) * -1100 + (1 - eout) * -1100)}px)`;
+  } else if (cfg.tipo === 'lista') {
+    ev.style.transform = `translateX(${f2((1 - ein) * 1100 + (1 - eout) * 1100)}px)`;
+    (cfg.itens || []).forEach((_, i) => {
+      const e = eOut(prog(t, 0.5 + i * 0.6, 0.9 + i * 0.6));
+      const el = $('bi' + i);
+      el.style.opacity = f2(e);
+      el.style.transform = `translateX(${f2((1 - e) * 30)}px)`;
+    });
+  } else {
+    ev.style.transform = `translateY(${f2((1 - ein) * 240 + (1 - eout) * 240)}px)`;
+  }
+};
+</script>
+</body>
+</html>
