@@ -203,8 +203,12 @@ def processa_clipe(seg, idx, saida_clipe):
         para_webm_alfa(pasta, arq)
         overlays.append((arq, ini, ini + dur_e))
 
-    partes = ['[0:v]scale=1920:1080:force_original_aspect_ratio=decrease,'
-              'pad=1920:1080:(ow-iw)/2:(oh-ih)/2:black,fps=30,format=yuv420p[v0]']
+    # Enquadramento: vídeo centralizado sobre um fundo desfocado do próprio vídeo (sem barras pretas)
+    partes = ['[0:v]split=2[fundo_src][frente_src];'
+              '[fundo_src]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,'
+              'boxblur=20:5,eq=brightness=-0.05[fundo];'
+              '[frente_src]scale=1920:1080:force_original_aspect_ratio=decrease[frente];'
+              '[fundo][frente]overlay=(W-w)/2:(H-h)/2,fps=30,format=yuv420p[v0]']
     cur = 'v0'
     for i, (_, ini, fim) in enumerate(overlays, start=1):
         partes.append(f'[{i}:v]format=yuva420p,setpts=PTS+{ini}/TB[o{i}]')
@@ -266,6 +270,52 @@ def segmento_reporter(seg, idx):
     return saida
 
 
+def corta(src, ini, fim, saida):
+    """Recorte preciso (re-codifica) de um trecho do clipe."""
+    sh(['ffmpeg', '-y', '-loglevel', 'error', '-i', src, '-ss', f'{ini}', '-to', f'{fim}',
+        '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '16', '-pix_fmt', 'yuv420p',
+        '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-ac', '2', saida])
+
+
+def segmento_dupla(seg, idx):
+    """Um único arquivo com vários falantes: cada trecho recebe legenda e animações próprias,
+    e a troca de falante acontece com uma transição (vídeo) e um sopro (áudio)."""
+    src = seg['clipe']
+    tr = seg.get('transicao', {})
+    T = float(tr.get('duracao', 0.7))
+    tipo_x = tr.get('tipo', 'slideleft')
+    processados = []
+    for k, p in enumerate(seg['partes']):
+        bruto = os.path.join(OBRA, f'dupla_{idx}_{k}_bruto.mp4')
+        corta(src, p['inicio'], p['fim'], bruto)
+        sub = {'tipo': 'apresentador', 'clipe': bruto, 'nome': p.get('nome', ''),
+               'funcao': p.get('funcao', ''), 'eventos': p.get('eventos', [])}
+        out = os.path.join(OBRA, f'dupla_{idx}_{k}.mp4')
+        processa_clipe(sub, idx * 10 + k, out)
+        processados.append(out)
+
+    atual = processados[0]
+    for k in range(1, len(processados)):
+        off = duracao(atual) - T
+        ms = int(round(off * 1000))
+        whoosh = os.path.join(OBRA, f'dupla_{idx}_sopro{k}.wav')
+        gera_whoosh(T, 0.0, T, whoosh)
+        novo = os.path.join(OBRA, f'dupla_{idx}_junta{k}.mp4')
+        fc = (f'[0:v][1:v]xfade=transition={tipo_x}:duration={T}:offset={off:.3f}[v];'
+              f'[0:a][1:a]acrossfade=d={T}:c1=tri:c2=tri[xa];'
+              f'[2:a]adelay={ms}|{ms}[w];'
+              f'[xa][w]amix=inputs=2:duration=first:normalize=0[a]')
+        sh(['ffmpeg', '-y', '-loglevel', 'error', '-i', atual, '-i', processados[k], '-i', whoosh,
+            '-filter_complex', fc, '-map', '[v]', '-map', '[a]',
+            '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-pix_fmt', 'yuv420p', '-r', '30',
+            '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-ac', '2', novo])
+        atual = novo
+
+    saida = os.path.join(OBRA, f'seg_{idx}.mp4')
+    finaliza(atual, saida, entrada=True, saida_fade=True)
+    return saida
+
+
 def medir_loudness(caminho):
     p = subprocess.run(['ffmpeg', '-hide_banner', '-nostats', '-i', caminho,
                         '-af', 'ebur128=peak=true', '-f', 'null', '-'],
@@ -303,6 +353,8 @@ def main():
             partes.append(segmento_apresentador(seg, i))
         elif tipo == 'reporter':
             partes.append(segmento_reporter(seg, i))
+        elif tipo == 'dupla':
+            partes.append(segmento_dupla(seg, i))
         else:
             raise SystemExit(f'Tipo de segmento desconhecido: {tipo}')
 

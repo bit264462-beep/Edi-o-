@@ -1,0 +1,21 @@
+{
+  "titulo": "Horizonte Verde",
+  "saida": "saida/Horizonte_Verde_Kaleb_e_Bernardo.mp4",
+  "segmentos": [
+    {"tipo": "abertura"},
+    {"tipo": "dupla", "clipe": "clipes/clipe_kaleb_bernardo.mp4",
+     "transicao": {"tipo": "slideleft", "duracao": 0.7},
+     "partes": [
+       {"inicio": 0.0, "fim": 10.2, "nome": "Kaleb", "funcao": "Apresentador",
+        "eventos": [
+          {"tempo": 1.0, "duracao": 3.5, "tipo": "manchete", "texto": "Nosso planeta está aquecendo"},
+          {"tempo": 5.0, "duracao": 3.5, "tipo": "manchete", "texto": "Causas, sinais e soluções"}
+        ]},
+       {"inicio": 11.6, "fim": 47.9, "nome": "Bernardo", "funcao": "Apresentador",
+        "eventos": [
+          {"tempo": 1.0, "duracao": 9.0, "tipo": "lista", "titulo": "Evidências do aquecimento global",
+           "itens": ["Temperatura média mais alta", "Geleiras derretendo", "Ondas de calor mais frequentes"]}
+        ]}
+     ]}
+  ]
+}

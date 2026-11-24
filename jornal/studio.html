@@ -174,7 +174,7 @@ BUILD.event = (cfg) => {
       ${(cfg.itens || []).map((x, i) => `<div class="bi" id="bi${i}" style="font-size:54px;font-weight:700;line-height:1.25;margin:16px 0;opacity:0"><span style="color:#F4C430">•</span>&nbsp; ${esc(x)}</div>`).join('')}
     </div>`;
   return `
-    <div class="a" id="ev" style="left:0;top:820px;width:1920px;height:220px;box-sizing:border-box;white-space:normal;display:flex;align-items:center;justify-content:center;padding:0 140px;text-align:center;background:rgba(11,61,46,.95);border-top:8px solid #F4C430;font-size:66px;font-weight:800;line-height:1.2">${esc(cfg.texto)}</div>`;
+    <div class="a" id="ev" style="left:0;top:60px;width:1920px;height:200px;box-sizing:border-box;white-space:normal;display:flex;align-items:center;justify-content:center;padding:0 140px;text-align:center;background:rgba(11,61,46,.95);border-bottom:8px solid #F4C430;font-size:66px;font-weight:800;line-height:1.2">${esc(cfg.texto)}</div>`;
 };
 
 RENDER.event = (t, cfg) => {
@@ -193,7 +193,7 @@ RENDER.event = (t, cfg) => {
       el.style.transform = `translateX(${f2((1 - e) * 30)}px)`;
     });
   } else {
-    ev.style.transform = `translateY(${f2((1 - ein) * 240 + (1 - eout) * 240)}px)`;
+    ev.style.transform = `translateY(${f2((1 - ein) * -240 + (1 - eout) * -240)}px)`;
   }
 };
 </script>
